@@ -4,6 +4,8 @@ import stat
 import sys
 import subprocess
 
+from lib import command
+
 
 def download_composer(install_dir: str, vm_name: str):
     # download composer if it's not the case
@@ -14,13 +16,16 @@ def download_composer(install_dir: str, vm_name: str):
 
         # run php commands to have composer
         cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php -r "copy(\'https://getcomposer.org/installer\', \'composer-setup.php\');"']
-        subprocess.call(base_cmd + cmd, stdin=sys.stdin)
-        cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php -r "if (hash_file(\'SHA384\', \'composer-setup.php\') === \'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae\') { echo \'Installer verified\'; } else { echo \'Installer corrupt\'; unlink(\'composer-setup.php\'); } echo PHP_EOL;"']
-        subprocess.call(base_cmd + cmd, stdin=sys.stdin)
+        command.launch_cmd_displays_output(base_cmd + cmd)
+        
+        cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php -r "if (hash_file(\'SHA384\', \'composer-setup.php\') === \'669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410\') { echo \'Installer verified\'; } else { echo \'Installer corrupt\'; unlink(\'composer-setup.php\'); } echo PHP_EOL;"']
+        command.launch_cmd_displays_output(base_cmd + cmd)
+        
         cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php composer-setup.php']
-        subprocess.call(base_cmd + cmd, stdin=sys.stdin)
+        command.launch_cmd_displays_output(base_cmd + cmd)
+        
         cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php -r "unlink(\'composer-setup.php\');"']
-        subprocess.call(base_cmd + cmd, stdin=sys.stdin)
+        command.launch_cmd_displays_output(base_cmd + cmd)
 
 
 def run(lamp, composer_cmd: str):
@@ -33,7 +38,7 @@ def run(lamp, composer_cmd: str):
     cmd = ['docker', 'exec', '-u', 'www-data', '-i' + tty, vm_name]
     cmd += ['bash', '-c', '--']
     cmd += ['cd /var/' + relative_dir + '; exec /usr/bin/php ~/bin/composer.phar {}'.format(composer_cmd)]
-    subprocess.call(cmd, stdin=sys.stdin, stderr=subprocess.STDOUT)
+    command.launch_cmd_displays_output(cmd)
 
 
 @click.command(help="Run a composer command", context_settings=dict(ignore_unknown_options=True))
