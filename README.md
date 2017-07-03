@@ -1,5 +1,5 @@
 # Composer Plugin for inetprocess/docker-lamp
-Plugin made by Inet Process to run composer commands
+Plugin made by Inet Process to run [composer](https://getcomposer.org) commands
 
 __WARNING: The plugin directory must be named `composer`__ (complete path: plugins/composer)
 
@@ -8,7 +8,7 @@ Clone the repository in the plugins/ directory of your docker-lamp
 
 
 # composer commands
-Use `lamp composer` to use composer
+Use `lamp composer` to use composer. On the first run, composer is downloaded. You can define the version at this stage or keep 1.4.2 and then run a `lamp composer self-update`
 
 Example to update packages
 ```bash
