@@ -5,39 +5,44 @@ import sys
 import subprocess
 
 from lib import command
+from urllib.request import urlretrieve
+from urllib.error import HTTPError
 
 
 def download_composer(install_dir: str, vm_name: str):
     # download composer if it's not the case
-    if os.path.isfile(install_dir + '/composer.phar') is False:
+    if os.path.isfile(install_dir + '/composer') is True:
+        return
+    
+    try:
         print('composer has not been downloaded yet, downloading ...')
-        tty = 't' if sys.stdin.isatty() else ''
-        base_cmd = ['docker', 'exec', '-u', 'www-data', '-i' + tty, vm_name, 'bash', '-c', '--']
-
-        # run php commands to have composer
-        cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php -r "copy(\'https://getcomposer.org/installer\', \'composer-setup.php\');"']
-        command.launch_cmd_displays_output(base_cmd + cmd)
+        version = click.prompt('Please enter the version you want to download', default='1.4.2')
         
-        cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php -r "if (hash_file(\'SHA384\', \'composer-setup.php\') === \'669656bab3166a7aff8a7506b8cb2d1c292f042046c5a994c43155c0be6190fa0355160742ab2e1c88d40d5be660b410\') { echo \'Installer verified\'; } else { echo \'Installer corrupt\'; unlink(\'composer-setup.php\'); } echo PHP_EOL;"']
-        command.launch_cmd_displays_output(base_cmd + cmd)
+        url = 'https://getcomposer.org/download/{}/composer.phar'.format(version)
+        urlretrieve(url, install_dir + '/composer')
+    except HTTPError as e:
+        msg = "Can't download the file. Check that composer v{} exists at https://getcomposer.org/download/ ({})".format(version, e.reason)
+        print(click.style(msg, fg='red'))
+        sys.exit(1)
+    except Exception as e:
+        print(click.style('Unknown Error: {}'.format(e), fg='red'))
+        sys.exit(1)
         
-        cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php composer-setup.php']
-        command.launch_cmd_displays_output(base_cmd + cmd)
         
-        cmd = ['cd ' + install_dir + ' ; exec /usr/bin/php -r "unlink(\'composer-setup.php\');"']
-        command.launch_cmd_displays_output(base_cmd + cmd)
-
-
 def run(lamp, composer_cmd: str):
     vm_name = lamp.get_vm_item('php', 'name')
     relative_dir = lamp.current_dir_relative
 
+    if relative_dir.startswith('www') is False:
+        print(click.style('You can run composer only from a subdirectory of www', fg='red'))
+        sys.exit(1)
+    
     download_composer('home/www-data/bin', vm_name)
 
     tty = 't' if sys.stdin.isatty() else ''
     cmd = ['docker', 'exec', '-u', 'www-data', '-i' + tty, vm_name]
     cmd += ['bash', '-c', '--']
-    cmd += ['cd /var/' + relative_dir + '; exec /usr/bin/php ~/bin/composer.phar {}'.format(composer_cmd)]
+    cmd += ['cd /var/' + relative_dir + '; exec /usr/bin/php ~/bin/composer {}'.format(composer_cmd)]
     command.launch_cmd_displays_output(cmd)
 
 
