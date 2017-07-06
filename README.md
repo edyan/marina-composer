@@ -1,10 +1,10 @@
-# Composer Plugin for inetprocess/docker-lamp
+# Composer Plugin for inetprocess/marina
 Plugin made by Inet Process to run [composer](https://getcomposer.org) commands
 
 __WARNING: The plugin directory must be named `composer`__ (complete path: plugins/composer)
 
 # Installation
-Clone the repository in the plugins/ directory of your docker-lamp
+Clone the repository in the plugins/ directory of your marina directory.
 
 
 # composer commands
