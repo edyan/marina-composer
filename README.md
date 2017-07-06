@@ -4,7 +4,7 @@ Plugin made by Inet Process to run [composer](https://getcomposer.org) commands
 __WARNING: The plugin directory must be named `composer`__ (complete path: plugins/composer)
 
 # Installation
-Clone the repository in the plugins/ directory of your marina
+Clone the repository in the plugins/ directory of your marina directory.
 
 
 # composer commands
