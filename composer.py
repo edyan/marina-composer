@@ -29,9 +29,9 @@ def download_composer(install_dir: str, vm_name: str):
         sys.exit(1)
         
         
-def run(lamp, composer_cmd: str):
-    vm_name = lamp.get_vm_item('php', 'name')
-    relative_dir = lamp.current_dir_relative
+def run(marina, composer_cmd: str):
+    vm_name = marina.get_vm_item('php', 'name')
+    relative_dir = marina.current_dir_relative
 
     if relative_dir.startswith('www') is False:
         print(click.style('You can run composer only from a subdirectory of www', fg='red'))
@@ -52,10 +52,10 @@ def run(lamp, composer_cmd: str):
 def composer(ctx, run_args: tuple):
     run_args = ' '.join(run_args)
 
-    lamp = ctx.obj['LAMP']
-    lamp.check_vms_are_running()
+    marina = ctx.obj['MARINA']
+    marina.check_vms_are_running()
 
-    if lamp.current_dir.find(lamp.lamp_base_dir) != 0:
-        raise Exception('You are not in a sub-directory of your lamp instance')
+    if marina.current_dir.find(marina.marina_base_dir) != 0:
+        raise Exception('You are not in a sub-directory of your marina instance')
 
-    run(lamp, run_args)
+    run(marina, run_args)
