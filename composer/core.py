@@ -4,7 +4,7 @@ import stat
 import subprocess
 import sys
 
-from marina.utils import get_venv_basedir
+from marina.package_utils import get_venv_basedir
 from urllib.request import urlretrieve
 from urllib.error import HTTPError
 
