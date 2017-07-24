@@ -1,17 +1,17 @@
-# Composer Plugin for edyan/marina
+# Composer Plugin for edyan/stakkr
 Plugin made by Inet Process to run [composer](https://getcomposer.org) commands
 
 __WARNING: The plugin directory must be named `composer`__ (complete path: plugins/composer)
 
 # Installation
-Clone the repository in the plugins/ directory of your marina directory.
+Clone the repository in the plugins/ directory of your stakkr directory.
 
 
 # composer commands
-Use `marina composer` to use composer. On the first run, composer is downloaded. You can define the version at this stage or keep 1.4.2 and then run a `marina composer self-update`
+Use `stakkr composer` to use composer. On the first run, composer is downloaded. You can define the version at this stage or keep 1.4.2 and then run a `stakkr composer self-update`
 
 Example to update packages
 ```bash
 cd www/project
-marina composer update
+stakkr composer update
 ```

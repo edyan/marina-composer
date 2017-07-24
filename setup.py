@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='StakkrComposer',
-    version='1.0',
+    version='3.0',
     packages=['composer'],
     entry_points='''
         [stakkr.plugins]
