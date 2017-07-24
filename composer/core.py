@@ -4,12 +4,12 @@ import stat
 import subprocess
 import sys
 
-from marina.package_utils import get_venv_basedir
+from stakkr.package_utils import get_venv_basedir
 from urllib.request import urlretrieve
 from urllib.error import HTTPError
 
 
-def download_composer(install_dir: str, vm_name: str):
+def download_composer(install_dir: str, ct_name: str):
     # download composer if it's not the case
     if os.path.isfile(install_dir + '/composer') is True:
         return
@@ -30,9 +30,9 @@ def download_composer(install_dir: str, vm_name: str):
         sys.exit(1)
 
 
-def run(marina, composer_cmd: str):
-    vm_name = marina.get_vm_item('php', 'name')
-    relative_dir = marina.current_dir_relative
+def run(stakkr, composer_cmd: str):
+    ct_name = stakkr.get_ct_item('php', 'name')
+    relative_dir = stakkr.current_dir_relative
 
     if relative_dir.startswith('www') is False:
         print(click.style('You can run composer only from a subdirectory of www', fg='red'))
@@ -42,10 +42,10 @@ def run(marina, composer_cmd: str):
     if os.path.isdir(home) and not os.path.isdir(home + '/bin'):
         os.mkdir(home + '/bin')
 
-    download_composer(home + '/bin', vm_name)
+    download_composer(home + '/bin', ct_name)
 
     tty = 't' if sys.stdin.isatty() else ''
-    cmd = ['docker', 'exec', '-u', 'www-data', '-i' + tty, vm_name]
+    cmd = ['docker', 'exec', '-u', 'www-data', '-i' + tty, ct_name]
     cmd += ['bash', '-c', '--']
     cmd += ['cd /var/' + relative_dir + '; exec /usr/bin/php ~/bin/composer {}'.format(composer_cmd)]
     subprocess.call(cmd, stdin=sys.stdin, stderr=subprocess.STDOUT)
@@ -57,10 +57,10 @@ def run(marina, composer_cmd: str):
 def composer(ctx, run_args: tuple):
     run_args = ' '.join(run_args)
 
-    marina = ctx.obj['MARINA']
-    marina.check_vms_are_running()
+    stakkr = ctx.obj['STAKKR']
+    stakkr.check_cts_are_running()
 
-    if marina.current_dir.find(marina.marina_base_dir) != 0:
-        raise Exception('You are not in a sub-directory of your marina instance')
+    if stakkr.current_dir.find(stakkr.stakkr_base_dir) != 0:
+        raise Exception('You are not in a sub-directory of your stakkr instance')
 
-    run(marina, run_args)
+    run(stakkr, run_args)

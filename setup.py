@@ -1,11 +1,11 @@
 from setuptools import setup
 
 setup(
-    name='MarinaComposer',
+    name='StakkrComposer',
     version='1.0',
     packages=['composer'],
     entry_points='''
-        [marina.plugins]
+        [stakkr.plugins]
         composer=composer.core:composer
     '''
 )
