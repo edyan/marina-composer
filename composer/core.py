@@ -4,6 +4,7 @@ import stat
 import subprocess
 import sys
 
+from stakkr import docker
 from stakkr.package_utils import get_venv_basedir
 from urllib.request import urlretrieve
 from urllib.error import HTTPError
@@ -31,7 +32,7 @@ def download_composer(install_dir: str, ct_name: str):
 
 
 def run(stakkr, composer_cmd: str):
-    ct_name = stakkr.get_ct_item('php', 'name')
+    ct_name = docker.get_ct_item('php', 'name')
     relative_dir = stakkr.current_dir_relative
 
     if relative_dir.startswith('www') is False:
@@ -58,7 +59,7 @@ def composer(ctx, run_args: tuple):
     run_args = ' '.join(run_args)
 
     stakkr = ctx.obj['STAKKR']
-    stakkr.check_cts_are_running()
+    docker.check_cts_are_running(stakkr.project_name, stakkr.config_file)
 
     if stakkr.current_dir.find(stakkr.stakkr_base_dir) != 0:
         raise Exception('You are not in a sub-directory of your stakkr instance')
