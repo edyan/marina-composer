@@ -33,7 +33,7 @@ def download_composer(install_dir: str, ct_name: str):
 
 def run(stakkr, composer_cmd: str):
     ct_name = docker.get_ct_item('php', 'name')
-    relative_dir = stakkr.current_dir_relative
+    relative_dir = stakkr.cwd_relative
 
     if relative_dir.startswith('www') is False:
         print(click.style('You can run composer only from a subdirectory of www', fg='red'))
@@ -59,9 +59,9 @@ def composer(ctx, run_args: tuple):
     run_args = ' '.join(run_args)
 
     stakkr = ctx.obj['STAKKR']
-    docker.check_cts_are_running(stakkr.project_name, stakkr.config_file)
+    docker.check_cts_are_running(stakkr.project_name)
 
-    if stakkr.current_dir.find(stakkr.stakkr_base_dir) != 0:
+    if stakkr.cwd_abs.find(stakkr.stakkr_base_dir) != 0:
         raise Exception('You are not in a sub-directory of your stakkr instance')
 
     run(stakkr, run_args)
