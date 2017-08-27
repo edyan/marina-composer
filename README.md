@@ -4,7 +4,13 @@ Plugin made by Inet Process to run [composer](https://getcomposer.org) commands
 __WARNING: The plugin directory must be named `composer`__ (complete path: plugins/composer)
 
 # Installation
-Clone the repository in the plugins/ directory of your stakkr directory.
+From `stakkr` root :
+
+```bash
+$ cd plugins
+$ git clone https://github.com/edyan/stakkr-composer composer
+$ stakkr refresh-plugins
+```
 
 
 # composer commands
