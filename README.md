@@ -1,5 +1,5 @@
-# Composer Plugin for edyan/stakkr
-Plugin made by Inet Process to run [composer](https://getcomposer.org) commands
+# Composer Plugin for stakkr-org/stakkr
+Plugin made to run [composer](https://getcomposer.org) commands
 
 __WARNING: The plugin directory must be named `composer`__ (complete path: plugins/composer)
 
@@ -8,7 +8,7 @@ From `stakkr` root :
 
 ```bash
 $ cd plugins
-$ git clone https://github.com/edyan/stakkr-composer composer
+$ git clone https://github.com/stakkr-org/stakkr-composer composer
 $ stakkr refresh-plugins
 ```
 
